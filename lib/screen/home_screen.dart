@@ -7,22 +7,36 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
-      title: 'HomeScreen',
-      children: [
-        ElevatedButton(
-          onPressed: () async {
-            final result = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) => RouteOneScreen(
-                  number: 123,
+    return WillPopScope(
+      onWillPop: () async{
+        //true - pop 가능
+        //false - pop 불가능
+        final canPop = Navigator.of(context).canPop();
+        return canPop;
+      },
+      child: MainLayout(
+        title: 'HomeScreen',
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).maybePop();
+            },
+            child: Text('maybePop'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final result = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => RouteOneScreen(
+                    number: 123,
+                  ),
                 ),
-              ),
-            );
-          },
-          child: Text('Push'),
-        )
-      ],
+              );
+            },
+            child: Text('Push'),
+          )
+        ],
+      ),
     );
   }
 }
